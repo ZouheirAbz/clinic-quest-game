@@ -5,16 +5,17 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Clinic Quest+ Game</title>
   <style>
-    body { font-family: Arial, sans-serif; padding: 20px; background: #f4f4f4; }
-    .container { max-width: 600px; margin: auto; background: white; padding: 20px; border-radius: 8px; }
+    body { font-family: Arial, sans-serif; padding: 20px; background: #f4f4f4; display: flex; justify-content: center; }
+    .container { max-width: 600px; background: white; padding: 20px; border-radius: 8px; margin-right: 20px; }
+    .log-container { width: 300px; background: #ffffff; border-radius: 8px; padding: 20px; height: fit-content; }
     h1 { text-align: center; }
     button { margin: 5px 0; padding: 10px; width: 100%; }
-    #log { margin-top: 20px; background: #eee; padding: 10px; border-radius: 4px; max-height: 300px; overflow-y: auto; }
+    #log { margin-top: 10px; background: #eee; padding: 10px; border-radius: 4px; max-height: 500px; overflow-y: auto; }
   </style>
 </head>
 <body>
   <div class="container">
-    <h1>Clinic Quest Game</h1>
+    <h1>Clinic Quest+ Web Game</h1>
     <input type="text" id="repName" placeholder="Enter Sales Rep Name" style="width:100%;padding:10px;margin-bottom:10px;">
     <button onclick="startGame()">Start Game</button>
     <div id="actions" style="display:none">
@@ -24,6 +25,10 @@
       <button onclick="patientScan()">Patient Scan Ad</button>
       <button onclick="showStatus()">Show Status</button>
     </div>
+  </div>
+
+  <div class="log-container">
+    <h2>Activity Log</h2>
     <div id="log"></div>
   </div>
 
