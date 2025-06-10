@@ -14,7 +14,7 @@
 </head>
 <body>
   <div class="container">
-    <h1>Clinic Quest Game</h1>
+    <h1>Clinic Quest+ Web Game</h1>
     <input type="text" id="repName" placeholder="Enter Sales Rep Name" style="width:100%;padding:10px;margin-bottom:10px;">
     <button onclick="startGame()">Start Game</button>
     <div id="actions" style="display:none">
@@ -28,10 +28,12 @@
   </div>
 
   <script>
-    let rep = { name: "", points: 0, missions: [], promotions: [] };
-    let doctor = { name: "Dr. Smith", points: 0, promotions: [] };
-    let patient = { name: "John", points: 0 };
-    let products = ["CardioPro", "VitaBoost", "ImmunoMax"];
+    let rep = { name: "", points: 0, missions: [], promotions: [], visits: 0, feedback: 0, missedCheckins: 0 };
+    let doctors = ["Dr. Smith", "Dr. Johnson", "Dr. Patel", "Dr. Kim", "Dr. Lopez"];
+    let patients = ["John", "Amina", "Carlos", "Lena", "Raj"];
+    let products = ["CardioPro", "VitaBoost", "ImmunoMax", "NeuroZen", "OsteoCare"];
+    let doctor = { name: doctors[Math.floor(Math.random() * doctors.length)], points: 0, promotions: [] };
+    let patient = { name: patients[Math.floor(Math.random() * patients.length)], points: 0 };
 
     function log(msg) {
       const logDiv = document.getElementById("log");
@@ -47,15 +49,16 @@
 
     function assignMission() {
       let product = products[Math.floor(Math.random() * products.length)];
-      let mission = { product, completed: false };
+      let mission = { product, doctor: doctor.name, completed: false };
       rep.missions.push(mission);
       rep.points += 50;
-      log(`Mission assigned and accepted by ${doctor.name} to promote ${product}. +50 points`);
+      rep.visits++;
+      log(`Pharma Company assigned a mission: Promote ${product} at ${doctor.name}'s clinic. +50 points`);
     }
 
     function promoteProduct() {
       let product = products[Math.floor(Math.random() * products.length)];
-      let ad = `Ad_${product}_${Math.floor(Math.random()*9000+1000)}`;
+      let ad = `Promo_${product}_${Math.floor(Math.random()*9000+1000)}`;
       doctor.promotions.push(ad);
       rep.promotions.push(ad);
       rep.points += 150;
@@ -68,9 +71,11 @@
         incomplete.completed = true;
         rep.points += 250;
         doctor.points += 100;
-        log(`Mission for ${incomplete.product} completed! +250 rep, +100 doctor`);
+        rep.feedback++;
+        log(`Mission for ${incomplete.product} completed at ${incomplete.doctor}! +250 rep, +100 doctor`);
       } else {
-        log("Mission failed or none available.");
+        rep.missedCheckins++;
+        log("Mission failed or none available. Missed check-in recorded.");
       }
     }
 
@@ -90,7 +95,16 @@
       Rep: ${rep.name} - ${rep.points} pts<br>
       Doctor: ${doctor.name} - ${doctor.points} pts<br>
       Patient: ${patient.name} - ${patient.points} pts<br>
-      Missions: ${rep.missions.length}, Promotions: ${rep.promotions.length}`);
+      Missions: ${rep.missions.length}, Promotions: ${rep.promotions.length}<br>
+      Badges: ${getBadges().join(", ")}`);
+    }
+
+    function getBadges() {
+      let badges = [];
+      if (rep.visits >= 5) badges.push("🏃 Mushroom Boost");
+      if (rep.feedback >= 3) badges.push("⭐ Star Mode");
+      if (rep.missedCheckins >= 2) badges.push("🍌 Banana Peel");
+      return badges;
     }
   </script>
 </body>
