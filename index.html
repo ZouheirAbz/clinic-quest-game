@@ -9,7 +9,7 @@
       font-family: Arial, sans-serif;
       margin: 0;
       padding: 0;
-      background: #fff8f0;
+      background: #eaf6fb;
       display: flex;
       flex-direction: row;
       height: 100vh;
@@ -20,48 +20,48 @@
       box-sizing: border-box;
     }
     .container {
-      background: #fff3e6;
-      border-right: 1px solid #d3bfa5;
-      box-shadow: inset -1px 0 0 #e6ccb3;
+      background: #d9eff7;
+      border-right: 1px solid #9ccae0;
+      box-shadow: inset -1px 0 0 #b6dcef;
       border-radius: 8px 0 0 8px;
     }
     .log-container {
-      background: #fffaf3;
-      border-left: 1px solid #e0cbb5;
-      box-shadow: inset 1px 0 0 #e6ccb3;
+      background: #edf9fd;
+      border-left: 1px solid #b0d8ec;
+      box-shadow: inset 1px 0 0 #b6dcef;
       border-radius: 0 8px 8px 0;
     }
     h1, h2 {
       text-align: center;
-      color: #5c4033;
+      color: #2c3e50;
     }
     button {
       margin: 5px 0;
       padding: 10px;
       width: 100%;
-      background-color: #ffddb3;
-      border: 1px solid #d6a679;
+      background-color: #aee1f9;
+      border: 1px solid #7dbbd8;
       border-radius: 6px;
       cursor: pointer;
     }
     button:hover {
-      background-color: #ffd699;
+      background-color: #9bd4f3;
     }
     #log {
       margin-top: 10px;
-      background: #f9f1e7;
+      background: #f2fbfe;
       padding: 10px;
       border-radius: 4px;
       max-height: 85vh;
       overflow-y: auto;
-      border: 1px solid #e0cbb5;
+      border: 1px solid #b0d8ec;
     }
   </style>
 </head>
 <body>
   <div class="container">
     <h1>Clinic Quest Mission</h1>
-    <input type="text" id="repName" placeholder="Enter Sales Rep Name" style="width:100%;padding:10px;margin-bottom:10px;border-radius:6px;border:1px solid #d6a679;">
+    <input type="text" id="repName" placeholder="Enter Sales Rep Name" style="width:100%;padding:10px;margin-bottom:10px;border-radius:6px;border:1px solid #7dbbd8;">
     <button onclick="startGame()">Start Game</button>
     <div id="actions" style="display:none">
       <button onclick="assignMission()">Assign Mission</button>
@@ -79,9 +79,9 @@
 
   <script>
     let rep = { name: "", points: 0, missions: [], promotions: [], visits: 0, feedback: 0, missedCheckins: 0 };
-    let doctors = ["Dr. Smith", "Dr. Johnson", "Dr. Patel", "Dr. Kim", "Dr. Lopez"];
-    let patients = ["John", "Amina", "Carlos", "Lena", "Raj"];
-    let products = ["CardioPro", "VitaBoost", "ImmunoMax", "NeuroZen", "OsteoCare"];
+    let doctors = ["Dr. Aria", "Dr. Ben", "Dr. Claire", "Dr. Daniel", "Dr. Elena"];
+    let patients = ["Noah", "Sophia", "Ethan", "Mia", "Liam"];
+    let products = ["PulmoAid", "NeuroFlex", "CardiSure", "GastroEase", "Immunix"];
     let doctor = { name: doctors[Math.floor(Math.random() * doctors.length)], points: 0, promotions: [] };
     let patient = { name: patients[Math.floor(Math.random() * patients.length)], points: 0 };
     let lastAssignedProduct = null;
@@ -101,6 +101,7 @@
 
     function assignMission() {
       let product = products[Math.floor(Math.random() * products.length)];
+      doctor.name = doctors[Math.floor(Math.random() * doctors.length)];
       lastAssignedProduct = product;
       let mission = { product, doctor: doctor.name, completed: false };
       rep.missions.push(mission);
@@ -139,6 +140,7 @@
     }
 
     function patientScan() {
+      patient.name = patients[Math.floor(Math.random() * patients.length)];
       if (doctor.promotions.length > 0) {
         let ad;
         if (!firstPromotionDone && lastAssignedProduct) {
