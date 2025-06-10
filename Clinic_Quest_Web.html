@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Clinic Quest+ Game</title>
+  <style>
+    body { font-family: Arial, sans-serif; padding: 20px; background: #f4f4f4; }
+    .container { max-width: 600px; margin: auto; background: white; padding: 20px; border-radius: 8px; }
+    h1 { text-align: center; }
+    button { margin: 5px 0; padding: 10px; width: 100%; }
+    #log { margin-top: 20px; background: #eee; padding: 10px; border-radius: 4px; max-height: 300px; overflow-y: auto; }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>Clinic Quest Game</h1>
+    <input type="text" id="repName" placeholder="Enter Sales Rep Name" style="width:100%;padding:10px;margin-bottom:10px;">
+    <button onclick="startGame()">Start Game</button>
+    <div id="actions" style="display:none">
+      <button onclick="assignMission()">Assign Mission</button>
+      <button onclick="promoteProduct()">Promote Product</button>
+      <button onclick="completeMission()">Complete Mission</button>
+      <button onclick="patientScan()">Patient Scan Ad</button>
+      <button onclick="showStatus()">Show Status</button>
+    </div>
+    <div id="log"></div>
+  </div>
+
+  <script>
+    let rep = { name: "", points: 0, missions: [], promotions: [] };
+    let doctor = { name: "Dr. Smith", points: 0, promotions: [] };
+    let patient = { name: "John", points: 0 };
+    let products = ["CardioPro", "VitaBoost", "ImmunoMax"];
+
+    function log(msg) {
+      const logDiv = document.getElementById("log");
+      logDiv.innerHTML += `<div>> ${msg}</div>`;
+      logDiv.scrollTop = logDiv.scrollHeight;
+    }
+
+    function startGame() {
+      rep.name = document.getElementById("repName").value || "SalesRep";
+      document.getElementById("actions").style.display = "block";
+      log(`Game started for ${rep.name}`);
+    }
+
+    function assignMission() {
+      let product = products[Math.floor(Math.random() * products.length)];
+      let mission = { product, completed: false };
+      rep.missions.push(mission);
+      rep.points += 50;
+      log(`Mission assigned and accepted by ${doctor.name} to promote ${product}. +50 points`);
+    }
+
+    function promoteProduct() {
+      let product = products[Math.floor(Math.random() * products.length)];
+      let ad = `Ad_${product}_${Math.floor(Math.random()*9000+1000)}`;
+      doctor.promotions.push(ad);
+      rep.promotions.push(ad);
+      rep.points += 150;
+      log(`${rep.name} promoted ${product} at ${doctor.name}'s clinic. +150 points`);
+    }
+
+    function completeMission() {
+      let incomplete = rep.missions.find(m => !m.completed);
+      if (incomplete && Math.random() < 0.7) {
+        incomplete.completed = true;
+        rep.points += 250;
+        doctor.points += 100;
+        log(`Mission for ${incomplete.product} completed! +250 rep, +100 doctor`);
+      } else {
+        log("Mission failed or none available.");
+      }
+    }
+
+    function patientScan() {
+      if (doctor.promotions.length > 0) {
+        let ad = doctor.promotions[Math.floor(Math.random() * doctor.promotions.length)];
+        patient.points += 100;
+        rep.points += 50;
+        log(`${patient.name} scanned ${ad}. +100 patient, +50 rep`);
+      } else {
+        log("No ads available to scan.");
+      }
+    }
+
+    function showStatus() {
+      log(`<strong>Status</strong><br>
+      Rep: ${rep.name} - ${rep.points} pts<br>
+      Doctor: ${doctor.name} - ${doctor.points} pts<br>
+      Patient: ${patient.name} - ${patient.points} pts<br>
+      Missions: ${rep.missions.length}, Promotions: ${rep.promotions.length}`);
+    }
+  </script>
+</body>
+</html>
