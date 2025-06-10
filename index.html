@@ -151,17 +151,13 @@
     }
 
     function patientScan() {
-  patient.name = patients[Math.floor(Math.random() * patients.length)];
-  if (doctor.promotions.length > 0) {
-    let adIndex = Math.floor(Math.random() * doctor.promotions.length);
-    let ad = doctor.promotions[adIndex];
-    patient.points += 100;
-    rep.points += 50;
-    log(`${patient.name} scanned ${ad}. +100 patient, +50 rep`);
-  } else {
-    log("No ads available to scan.");
-  }
-} scanned ${ad}. +100 patient, +50 rep`);
+      patient.name = patients[Math.floor(Math.random() * patients.length)];
+      if (doctor.promotions.length > 0) {
+        let adIndex = Math.floor(Math.random() * doctor.promotions.length);
+        let ad = doctor.promotions[adIndex];
+        patient.points += 100;
+        rep.points += 50;
+        log(`${patient.name} scanned ${ad}. +100 patient, +50 rep`);
       } else {
         log("No ads available to scan.");
       }
