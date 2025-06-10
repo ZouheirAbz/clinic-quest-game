@@ -85,7 +85,8 @@
     let doctor = { name: doctors[Math.floor(Math.random() * doctors.length)], points: 0, promotions: [] };
     let patient = { name: patients[Math.floor(Math.random() * patients.length)], points: 0 };
     let lastAssignedProduct = null;
-    let firstPromotionDone = false;
+    let missionAssigned = false;
+    let productPromoted = false;
 
     function log(msg) {
       const logDiv = document.getElementById("log");
@@ -103,6 +104,8 @@
       let product = products[Math.floor(Math.random() * products.length)];
       doctor.name = doctors[Math.floor(Math.random() * doctors.length)];
       lastAssignedProduct = product;
+      missionAssigned = true;
+      productPromoted = false;
       let mission = { product, doctor: doctor.name, completed: false };
       rep.missions.push(mission);
       rep.points += 50;
@@ -111,18 +114,26 @@
     }
 
     function promoteProduct() {
-      let product;
-      if (!firstPromotionDone && lastAssignedProduct) {
-        product = lastAssignedProduct;
-        firstPromotionDone = true;
-      } else {
-        product = products[Math.floor(Math.random() * products.length)];
+      if (!missionAssigned) {
+        log("No mission assigned. Assign a mission first.");
+        return;
       }
-      let ad = `Promo_${product}_${Math.floor(Math.random()*9000+1000)}`;
-      doctor.promotions.push(ad);
-      rep.promotions.push(ad);
-      rep.points += 150;
-      log(`${rep.name} promoted ${product} at ${doctor.name}'s clinic. +150 points`);
+      if (productPromoted) {
+        let product = products[Math.floor(Math.random() * products.length)];
+        let ad = `Promo_${product}_${Math.floor(Math.random()*9000+1000)}`;
+        doctor.promotions.push(ad);
+        rep.promotions.push(ad);
+        rep.points += 150;
+        log(`${rep.name} promoted ${product} at ${doctor.name}'s clinic. +150 points`);
+      } else {
+        let product = lastAssignedProduct;
+        let ad = `Promo_${product}_${Math.floor(Math.random()*9000+1000)}`;
+        doctor.promotions.push(ad);
+        rep.promotions.push(ad);
+        rep.points += 150;
+        productPromoted = true;
+        log(`${rep.name} promoted assigned product ${product} at ${doctor.name}'s clinic. +150 points`);
+      }
     }
 
     function completeMission() {
@@ -142,12 +153,7 @@
     function patientScan() {
       patient.name = patients[Math.floor(Math.random() * patients.length)];
       if (doctor.promotions.length > 0) {
-        let ad;
-        if (!firstPromotionDone && lastAssignedProduct) {
-          ad = doctor.promotions.find(p => p.includes(lastAssignedProduct)) || doctor.promotions[0];
-        } else {
-          ad = doctor.promotions[Math.floor(Math.random() * doctor.promotions.length)];
-        }
+        let ad = doctor.promotions[Math.floor(Math.random() * doctor.promotions.length)];
         patient.points += 100;
         rep.points += 50;
         log(`${patient.name} scanned ${ad}. +100 patient, +50 rep`);
